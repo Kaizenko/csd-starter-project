@@ -2,20 +2,25 @@ package com.kaizenko.vendingmachine;
 
 public class VendingMachine {
 
-	int cents=0;
+	IPaymentProcessor paymentProcessor;
+	
+	public VendingMachine(IPaymentProcessor paymentProcessor) {
+		this.paymentProcessor = paymentProcessor;
+	}
+	
 	public int releaseChange() {	
-		int change = cents;
-		cents = 0;
+		int change = paymentProcessor.getPayment();
+		paymentProcessor.processPayment(change);
 		return change;
 	}
 
 	public void insertCoin() {
-		cents+=25;		
+		paymentProcessor.makePayment(25);	
 	}
 
 	public Product buyProduct() {
-		if (cents>=50) {
-			cents = cents - 50;
+		if (paymentProcessor.getPayment()>=50) {
+			paymentProcessor.processPayment(50);
 			return new Product();
 		}
 		else {

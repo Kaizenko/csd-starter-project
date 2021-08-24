@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,9 +13,17 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 class VendingMachineTest {	
 	
+	VendingMachine vendingMachine;
+	
+	@BeforeEach
+	void Setup() {
+		IPaymentProcessor paymentProcessor = new PaymentProcessor();
+		 vendingMachine = new VendingMachine(paymentProcessor);
+	}
+	
 	@Test
 	void releaseChange_WhenNoMoneyIsInserted_Expect0Change() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		
 		int change = vendingMachine.releaseChange();
 		
@@ -23,7 +32,7 @@ class VendingMachineTest {
 	
 	@Test
 	void releaseChange_WhenAQuarterIsInserted_Expect25C() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		
 		int change = vendingMachine.releaseChange();
@@ -33,7 +42,7 @@ class VendingMachineTest {
 	
 	@Test
 	void releaseChange_When2QuartersAreInserted_Expect50C() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
 		
@@ -44,7 +53,7 @@ class VendingMachineTest {
 	
 	@Test
 	void releaseChange_When10QuartersAreInserted_Expect250C() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
@@ -63,7 +72,7 @@ class VendingMachineTest {
 	
 	@Test
 	void releaseChange_WhenChangeIsAlreadyReleased_Expect0c() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.releaseChange();		
 		
@@ -74,7 +83,7 @@ class VendingMachineTest {
 	
 	@Test
 	void buyProduct_WhenNoMoneyInserted_ExpectNoProduct() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		
 		Product product = vendingMachine.buyProduct();		
 		
@@ -83,7 +92,7 @@ class VendingMachineTest {
 	
 	@Test
 	void buyProduct_WhenExactMoneyInserted_ExpectProduct() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
 		
@@ -94,7 +103,7 @@ class VendingMachineTest {
 	
 	@Test
 	void buyProduct_WhenMoreMoneyInserted_ExpectProduct() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
@@ -106,7 +115,7 @@ class VendingMachineTest {
 	
 	@Test
 	void buyProduct_WhenNotEnoughMoneyInserted_ExpectNoProduct() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 				
 		Product product = vendingMachine.buyProduct();		
@@ -116,7 +125,7 @@ class VendingMachineTest {
 	
 	@Test
 	void buyProduct_WhenProductAlreadyPurchaseWithExactMoney_ExpectNoProduct() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
 		vendingMachine.buyProduct();		
@@ -128,7 +137,7 @@ class VendingMachineTest {
 	
 	@Test
 	void releaseChange_WhenProductAlreadyPurchaseWith75c_Expect25c() {
-		VendingMachine vendingMachine = new VendingMachine();
+		 
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
 		vendingMachine.insertCoin();
