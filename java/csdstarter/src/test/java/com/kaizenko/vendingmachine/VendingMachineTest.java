@@ -14,11 +14,13 @@ import org.junit.jupiter.params.provider.CsvSource;
 class VendingMachineTest {	
 	
 	VendingMachine vendingMachine;
+	IPaymentProcessor mockPaymentProcessor;
 	
 	@BeforeEach
 	void Setup() {
 		IPaymentProcessor paymentProcessor = new PaymentProcessor();
-		 vendingMachine = new VendingMachine(paymentProcessor);
+		 mockPaymentProcessor = mock(IPaymentProcessor.class);
+		 vendingMachine = new VendingMachine(mockPaymentProcessor);
 	}
 	
 	@Test
@@ -146,6 +148,36 @@ class VendingMachineTest {
 		int change = vendingMachine.releaseChange();		
 		
 		assertThat(change).isEqualTo(25);
+	}
+	
+	@Test
+	void buyProduct_WhenPayment_ExpectProduct() {
+		//vendingMachine.insertCoin();
+		//vendingMachine.insertCoin();
+		 
+		when(mockPaymentProcessor.getPayment()).thenReturn(50);	
+				
+		Product product = vendingMachine.buyProduct();		
+		
+		assertThat(product).isNotNull();
+	}
+	
+	@Test
+	void buyProduct_WhenNoPayment_ExpectNoProduct() {
+		 
+		when(mockPaymentProcessor.getPayment()).thenReturn(49);	
+				
+		Product product = vendingMachine.buyProduct();		
+		
+		assertThat(product).isNull();
+	}
+	
+	@Test
+	void insertCoin_WhenPayment_ExpectPaymentOf25IsMade() {
+		
+		vendingMachine.insertCoin();
+		verify(mockPaymentProcessor).makePayment(50);
+		
 	}
 	
 
